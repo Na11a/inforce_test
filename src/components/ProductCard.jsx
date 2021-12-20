@@ -1,9 +1,15 @@
-import { React, } from "react";
+import { React,useState } from "react";
 import { Card, Button } from "antd";
 import Size from "./Size";
+import { Link } from "react-router-dom";
+import {DeleteConfirmModal} from './index'
 const { Meta } = Card;
 
 const ProductCard = ({ product }) => {
+  const [showModal,setShowModal] = useState(false)
+  const onDeleteProduct = () => {
+    setShowModal(true)
+  };
   return (
     <div>
       <Card
@@ -18,14 +24,24 @@ const ProductCard = ({ product }) => {
         }
       >
         <Meta title={product.name} description={`${product.price}$`} />
+        <Link to={`${product.id}`}>
+          <Button style={{ marginTop: 20 }} type="primary">
+            Show Info
+          </Button>
+        </Link>
         <Button
-          style={{ marginTop: 20 }}
+          onClick={() => onDeleteProduct()}
+          style={{ marginLeft: 20, background: "red" }}
           type="primary"
         >
-          Show Info
+          {" "}
+          Delete
         </Button>
         <Size size={product.size} />
       </Card>
+      {
+        showModal && <DeleteConfirmModal product={product} closeModel={setShowModal}></DeleteConfirmModal>
+      }
     </div>
   );
 };

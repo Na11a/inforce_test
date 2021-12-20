@@ -34,17 +34,15 @@ const Home = (props) => {
           }}
           dataSource={products}
           renderItem={(product) => (
-            <Link to={`${product.id}`}>
               <List.Item>
                 <ProductCard product={product}>Card content</ProductCard>
               </List.Item>
-            </Link>
           )}
         />
       )}
 
       <Button onClick={() => showModalForm()}>Add new Pizza </Button>
-      {showModal && <ModalProduct closeModel={setShowModal} />}
+      {showModal && <ModalProduct closeModel={setShowModal} create/>}
     </div>
   );
 };

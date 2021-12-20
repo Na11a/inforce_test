@@ -1,7 +1,11 @@
 import React from "react";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
-const AddProductForm = ({ showModal }) => {
+import { addPizza,getPizza } from "../store/asyncActions/pizzas";
+import { useDispatch } from "react-redux";
+import { updateProduct } from "../features";
+const ProductForm = ({ showModal, product, edit, create }) => {
+  const dispatch = useDispatch();
   const submitForm = (event) => {
     let pizza = {};
     const formData = new FormData(event.currentTarget);
@@ -9,8 +13,13 @@ const AddProductForm = ({ showModal }) => {
     for (let [key, value] of formData.entries()) {
       pizza[key] = value;
     }
-
-    console.log(pizza);
+    if (create) {
+      dispatch(addPizza(pizza));
+    }
+    if (edit) {
+      pizza["id"] = product.id;
+      updateProduct(pizza).then(dispatch(getPizza(product.id)))
+    }
     showModal(false);
   };
   const closeForm = () => {
@@ -21,17 +30,35 @@ const AddProductForm = ({ showModal }) => {
       <Form onSubmit={submitForm}>
         <Form.Group className="mb-3">
           <Form.Label>Name</Form.Label>
-          <Form.Control name="name" required type="text" placeholder="Name" />
+          <Form.Control
+            name="name"
+            required
+            defaultValue={product ? product.name : ""}
+            type="text"
+            placeholder="Name"
+          />
           <Form.Text className="text-muted"></Form.Text>
         </Form.Group>
         <Form.Group className="mb-3">
           <Form.Label>Price</Form.Label>
-          <Form.Control name="price" required type="text" placeholder="Price" />
+          <Form.Control
+            name="price"
+            required
+            defaultValue={product ? product.price : 0}
+            type="number"
+            placeholder="Price"
+          />
           <Form.Text className="text-muted"></Form.Text>
         </Form.Group>
         <Form.Group className="mb-3">
           <Form.Label>Width</Form.Label>
-          <Form.Control name="width" required type="text" placeholder="width" />
+          <Form.Control
+            name="width"
+            required
+            defaultValue={product ? product.size.width : 0}
+            type="number"
+            placeholder="width"
+          />
           <Form.Text className="text-muted"></Form.Text>
         </Form.Group>
         <Form.Group className="mb-3">
@@ -39,14 +66,21 @@ const AddProductForm = ({ showModal }) => {
           <Form.Control
             name="height"
             required
-            type="text"
+            defaultValue={product ? product.size.height : 0}
+            type="number"
             placeholder="height"
           />
           <Form.Text className="text-muted"></Form.Text>
         </Form.Group>
         <Form.Group className="mb-3" controlId="">
           <Form.Label>Count</Form.Label>
-          <Form.Control name="count" required type="text" placeholder="count" />
+          <Form.Control
+            name="count"
+            required
+            defaultValue={product ? product.count : 0}
+            type="number"
+            placeholder="count"
+          />
         </Form.Group>
         <Form.Group controlId="formFileSm" className="mb-3">
           <Form.Label>Image</Form.Label>
@@ -55,6 +89,7 @@ const AddProductForm = ({ showModal }) => {
             required
             type="text"
             multiple
+            defaultValue={product ? product.image_url : ""}
             size="sm"
           />
         </Form.Group>
@@ -82,4 +117,4 @@ const AddProductForm = ({ showModal }) => {
   );
 };
 
-export default AddProductForm;
+export default ProductForm;

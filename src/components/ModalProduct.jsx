@@ -1,8 +1,8 @@
 import { React, useState } from "react";
 import Modal from "react-bootstrap/Modal";
-import AddProductForm from "./AddProductForm"
+import {ProductForm} from "../components"
 
-const ModalProduct = ({ product,closeModel }) => {
+const ModalProduct = ({ product,closeModel,edit,create }) => {
   const [show, setShow] = useState(true);
 
   const handleClose = () => {
@@ -17,7 +17,7 @@ const ModalProduct = ({ product,closeModel }) => {
           <Modal.Title>AddProduct</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <AddProductForm showModal={handleClose}/>
+          <ProductForm showModal={handleClose} product={product} edit={edit} create={create}/>
         </Modal.Body>
       </Modal>
     </>

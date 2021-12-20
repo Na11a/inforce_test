@@ -1,11 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
-
+import {ModalProduct} from '../components'
 import ListGroup from "react-bootstrap/ListGroup";
 import { Size } from "../components";
 
 const ProductInfo = ({ product }) => {
+  const [showEditModal,setShowEditModal] = useState(false) 
+  const onEditClick = () =>{
+    setShowEditModal(true)
+  }
   return (
     <div>
       <Card style={{ width: "25rem" }}>
@@ -27,10 +31,10 @@ const ProductInfo = ({ product }) => {
         <Card.Footer
           style={{ display: "flex", justifyContent: "space-around" }}
         >
-          <Button>Delete</Button>
-          <Button>Edit</Button>
+          <Button onClick={()=>onEditClick()}>Edit</Button>
         </Card.Footer>
       </Card>
+      {showEditModal && <ModalProduct product={product} closeModel={setShowEditModal} edit/>}
     </div>
   );
 };

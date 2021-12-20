@@ -1,3 +1,19 @@
-import { getProducts, AddPizza, getProduct } from "./catchData";
+import {
+  getProducts,
+  addProduct,
+  getProduct,
+  deleteProduct,
+  updateProduct,
+  addComment,
+  deleteComment
+} from "./axiosRequests";
 
-export { getProducts, AddPizza, getProduct };
+export {
+  getProducts,
+  addProduct,
+  getProduct,
+  deleteProduct,
+  updateProduct,
+  addComment,
+  deleteComment
+};
