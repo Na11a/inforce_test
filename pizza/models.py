@@ -1,5 +1,5 @@
 from django.db import models
-
+import datetime
 
 class Product(models.Model):
     image_url = models.TextField(max_length=200,null=True)
@@ -13,5 +13,5 @@ class Product(models.Model):
 
 class Comment(models.Model):
     description = models.TextField(max_length=200)
-    date = models.DateField()
+    date = models.DateField(null=True,blank=True,default=datetime.datetime.now())
     product = models.ForeignKey(Product, on_delete=models.CASCADE)

@@ -5,6 +5,7 @@ from .models import Product, Comment
 class ProductSerializer(serializers.HyperlinkedModelSerializer):
     size = serializers.SerializerMethodField('get_size')
     comments = serializers.SerializerMethodField('get_comments')
+
     def get_size(self, obj):
         return {"width": obj.width, 'height': obj.height}
 
@@ -18,10 +19,16 @@ class ProductSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Product
-        fields = ('id', 'image_url', 'size','price', 'name', 'count', 'weight', 'comments')
+        fields = ('id', 'image_url', 'size', 'price', 'name', 'count', 'weight', 'comments')
 
 
 class CreatedProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
-        fields ='__all__'
+        fields = '__all__'
+
+
+class CommentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Comment
+        fields = ('product','description','date')

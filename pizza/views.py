@@ -1,7 +1,7 @@
 from django.shortcuts import render
-from .serializers import ProductSerializer,CreatedProductSerializer
+from .serializers import ProductSerializer,CreatedProductSerializer,CommentSerializer
 from rest_framework.views import APIView,Response
-from .models import Product
+from .models import Product,Comment
 from django.http import Http404
 
 class ProductList(APIView):
@@ -23,7 +23,6 @@ class ProductList(APIView):
         if serializer.is_valid():
             product = serializer.save()
             return_product = Product.objects.get(pk=product.id)
-            print(return_product)
             product_serializer = ProductSerializer(return_product)
             return Response(product_serializer.data,status=200)
         return Response(status=500)
@@ -59,3 +58,28 @@ class ProductFilterView(APIView):
         products = Product.objects.filter(price >= price)
         serializer = ProductSerializer(products,many=True)
         return Response({products:serializer.data})
+
+class CommentView(APIView):
+    def post(self,request):
+        comment = request.data
+        serializer = CommentSerializer(data=comment)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(status=200)
+        return Response(status=500)
+    def get(self,request):
+        comments = Comment.objects.all()
+        serializer = CommentSerializer(comments,many=True)
+        return Response(serializer.data)
+
+class CommentDetailView(APIView):
+    def get_object(self, pk):
+        try:
+            return Comment.objects.get(pk=pk)
+        except Comment.DoesNotExist:
+            raise Http404
+
+    def delete(self,request,id):
+        comment = self.get_object(id)
+        comment.delete()
+        return Response(status=204)
